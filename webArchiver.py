@@ -30,7 +30,7 @@ piparser.add_argument("-c", "--configfile", help="Set configfile in init format 
 piargs = piparser.parse_args()
 if piargs.configfile is not None:
 	configfile=piargs.configfile
-#to do:read config file
+#read config file
 config = configparser.ConfigParser()
 if os.path.isfile(configfile):	
 	config.read(configfile)
@@ -154,7 +154,7 @@ def wfolder(directory):
 			wfile(ffdef, ff)
 		else:
 			wfolder(ffdef)
-#to do:main program
+#main program
 forcedir(archivedir1);forcedir(archivedir2)
 infolder=os.path.abspath(piargs.folderin)
 if not os.path.exists(infolder):
