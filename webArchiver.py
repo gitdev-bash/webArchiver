@@ -82,33 +82,33 @@ def forcedir(file_path):
 		os.makedirs(directory)
 def hasher(filein, hname, blocksize):
 	if hname=="blake2s":
-		htype=hashlib.blake2s
+		htype=hashlib.blake2s()
 	elif hname=="sha384":
-		htype=hashlib.sha384
+		htype=hashlib.sha384()
 	elif hname=="sha512":
-		htype=hashlib.sha512
+		htype=hashlib.sha512()
 	elif hname=="sha3_256":
-		htype=hashlib.sha3_256
+		htype=hashlib.sha3_256()
 	elif hname=="sha256":
-		htype=hashlib.sha256
+		htype=hashlib.sha256()
 	elif hname=="md5":
-		htype=hashlib.md5
+		htype=hashlib.md5()
 	elif hname=="sha3_512":
-		htype=hashlib.sha3_512
+		htype=hashlib.sha3_512()
 	elif hname=="sha3_224":
-		htype=hashlib.sha3_224
+		htype=hashlib.sha3_224()
 	elif hname=="shake_128":
-		htype=hashlib.shake_128
+		htype=hashlib.shake_128()
 	elif hname=="shake_256":
-		htype=hashlib.shake_256
+		htype=hashlib.shake_256()
 	elif hname=="sha1":
-		htype=hashlib.sha1
+		htype=hashlib.sha1()
 	elif hname=="blake2b":
-		htype=hashlib.blake2b
+		htype=hashlib.blake2b()
 	elif hname=="sha224":
-		htype=hashlib.sha224
+		htype=hashlib.sha224()
 	elif hname=="sha3_384":
-		htype=hashlib.sha3_384
+		htype=hashlib.sha3_384()
 	else:
 		print("wrong hash type")
 		exit(1)
@@ -142,7 +142,7 @@ def wfile(filedef, filerel):
 	if csvid=="False":
 		csvid=file_len(csv1)+1
 		csver(csv1, "append", [csvid, hashin])
-		os.replace(filedef, archivedir1 + "/" + str(csvid))
+		shutil.move(filedef, archivedir1 + "/" + str(csvid))
 	else:
 		os.remove(filedef)
 	csver(csv2, "append", [datetimes, csvid, filerel])
