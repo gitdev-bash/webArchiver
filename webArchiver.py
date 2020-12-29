@@ -44,7 +44,7 @@ if os.path.isfile(configfile):
 		if "datetimeformat" in config["DEFAULT"]:
 			datetimeformat=config["DEFAULT"]["datetimeformat"]
 		if "hashblocksize" in config["DEFAULT"]:
-			hashblocksize=config["DEFAULT"]["hashblocksize"]
+			hashblocksize=int(config["DEFAULT"]["hashblocksize"])
 		if "hashtype" in config["DEFAULT"]:
 			hashertype=config["DEFAULT"]["hashtype"]
 		if "foldersave" in config["DEFAULT"]:
@@ -64,7 +64,7 @@ if piargs.filelist2 is not None:
 if piargs.datetimeformat is not None:
 	datetimeformat=piargs.datetimeformat
 if piargs.hashblocksize is not None:
-	hashblocksize=piargs.hashblocksize
+	hashblocksize=int(piargs.hashblocksize)
 if piargs.hashtype is not None:
 	hashertype=piargs.hashtype
 #define functions
