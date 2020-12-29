@@ -81,33 +81,33 @@ def forcedir(file_path):
 	if not os.path.exists(directory):
 		os.makedirs(directory)
 def hasher(filein, hname, blocksize):
-	if hname="blake2s":
+	if hname=="blake2s":
 		htype=hashlib.blake2s
-	elif hname="sha384":
+	elif hname=="sha384":
 		htype=hashlib.sha384
-	elif hname="sha512":
+	elif hname=="sha512":
 		htype=hashlib.sha512
-	elif hname="sha3_256":
+	elif hname=="sha3_256":
 		htype=hashlib.sha3_256
-	elif hname="sha256":
+	elif hname=="sha256":
 		htype=hashlib.sha256
-	elif hname="md5":
+	elif hname=="md5":
 		htype=hashlib.md5
-	elif hname="sha3_512":
+	elif hname=="sha3_512":
 		htype=hashlib.sha3_512
-	elif hname="sha3_224":
+	elif hname=="sha3_224":
 		htype=hashlib.sha3_224
-	elif hname="shake_128":
+	elif hname=="shake_128":
 		htype=hashlib.shake_128
-	elif hname="shake_256":
+	elif hname=="shake_256":
 		htype=hashlib.shake_256
-	elif hname="sha1":
+	elif hname=="sha1":
 		htype=hashlib.sha1
-	elif hname="blake2b":
+	elif hname=="blake2b":
 		htype=hashlib.blake2b
-	elif hname="sha224":
+	elif hname=="sha224":
 		htype=hashlib.sha224
-	elif hname="sha3_384":
+	elif hname=="sha3_384":
 		htype=hashlib.sha3_384
 	else:
 		print("wrong hash type")
