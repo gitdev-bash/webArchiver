@@ -67,6 +67,8 @@ if piargs.hashblocksize is not None:
 	hashblocksize=int(piargs.hashblocksize)
 if piargs.hashtype is not None:
 	hashertype=piargs.hashtype
+#check user input
+#to do:check user input
 #define functions
 def file_len(fname):
 	if False == os.path.isfile(fname):
