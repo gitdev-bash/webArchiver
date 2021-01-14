@@ -16,7 +16,7 @@ datetimes=datetime.datetime.now().strftime(datetimeformat)
 hashblocksize=65536
 hashertype="sha256"
 configfile=os.path.expanduser("~") + "/archiver/archiver.conf"
-#readtags
+#readtags(To fix)
 piparser = argparse.ArgumentParser()
 piparser.add_argument("-fi", "--folderin", help="Input folder")
 piparser.add_argument("-fs", "--foldersave", help="Archive save directory location")
