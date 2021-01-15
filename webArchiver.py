@@ -67,6 +67,7 @@ if piargs.hashblocksize is not None:
 	hashblocksize=int(piargs.hashblocksize)
 if piargs.hashtype is not None:
 	hashertype=piargs.hashtype
+
 #define functions
 def file_len(fname):
 	if False == os.path.isfile(fname):
@@ -81,37 +82,22 @@ def forcedir(file_path):
 	if not os.path.exists(directory):
 		os.makedirs(directory)
 def hasher(filein, hname, blocksize):
-	if hname=="blake2s":
-		htype=hashlib.blake2s()
-	elif hname=="sha384":
-		htype=hashlib.sha384()
-	elif hname=="sha512":
-		htype=hashlib.sha512()
-	elif hname=="sha3_256":
-		htype=hashlib.sha3_256()
-	elif hname=="sha256":
-		htype=hashlib.sha256()
-	elif hname=="md5":
-		htype=hashlib.md5()
-	elif hname=="sha3_512":
-		htype=hashlib.sha3_512()
-	elif hname=="sha3_224":
-		htype=hashlib.sha3_224()
-	elif hname=="shake_128":
-		htype=hashlib.shake_128()
-	elif hname=="shake_256":
-		htype=hashlib.shake_256()
-	elif hname=="sha1":
-		htype=hashlib.sha1()
-	elif hname=="blake2b":
-		htype=hashlib.blake2b()
-	elif hname=="sha224":
-		htype=hashlib.sha224()
-	elif hname=="sha3_384":
-		htype=hashlib.sha3_384()
-	else:
-		print("wrong hash type")
-		exit(1)
+	htype={
+		"blake2s": lambda: hashlib.blake2s(),
+		"sha384": lambda: hashlib.sha384(),
+		"sha512": lambda: hashlib.sha512(),
+		"sha3_256": lambda: hashlib.sha3_256(),
+		"sha256": lambda: hashlib.sha256(),
+		"md5": lambda: hashlib.md5(),
+		"sha3_512": lambda: hashlib.sha3_512(),
+		"sha3_224": lambda: hashlib.sha3_224(),
+		"shake_128": lambda: hashlib.shake_128(),
+		"shake_256": lambda: hashlib.shake_256(),
+		"sha1": lambda: hashlib.sha1(),
+		"blake2b": lambda: hashlib.blake2b(),
+		"sha224": lambda: hashlib.sha224(),
+		"sha3_384": lambda: hashlib.sha3_384(),
+	}.get(hname, lambda: (print("wrong hash type"), exit(1)))()
 	with open(filein, 'rb') as fi: 
 		while True: 
 			data = fi.read(blocksize) 
@@ -163,6 +149,3 @@ if not os.path.exists(infolder):
 wfolder(infolder)
 shutil.move(infolder, archivedir2 + "/")
 exit(0)
-
-
-
