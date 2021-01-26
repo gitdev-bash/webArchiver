@@ -95,8 +95,8 @@ def forcedir(file_path):
 
 
 def hasher(filein, hname, blocksize):
-    htype = getattr(hashlib, hname, "N/A")
-    if htype == "N/A":
+    htype = getattr(hashlib, hname, print)()
+    if htype is None:
         print("wrong hash type")
         exit(1)
     with open(filein, 'rb') as fi:
