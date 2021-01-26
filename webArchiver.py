@@ -95,22 +95,10 @@ def forcedir(file_path):
 
 
 def hasher(filein, hname, blocksize):
-    htype = {
-        "blake2s": lambda: hashlib.blake2s(),
-        "sha384": lambda: hashlib.sha384(),
-        "sha512": lambda: hashlib.sha512(),
-        "sha3_256": lambda: hashlib.sha3_256(),
-        "sha256": lambda: hashlib.sha256(),
-        "md5": lambda: hashlib.md5(),
-        "sha3_512": lambda: hashlib.sha3_512(),
-        "sha3_224": lambda: hashlib.sha3_224(),
-        "shake_128": lambda: hashlib.shake_128(),
-        "shake_256": lambda: hashlib.shake_256(),
-        "sha1": lambda: hashlib.sha1(),
-        "blake2b": lambda: hashlib.blake2b(),
-        "sha224": lambda: hashlib.sha224(),
-        "sha3_384": lambda: hashlib.sha3_384(),
-    }.get(hname, lambda: (print("wrong hash type"), exit(1)))()
+    htype = getattr(hashlib, hname, print)()
+    if htype is None:
+        print("wrong hash type")
+        exit(1)
     with open(filein, 'rb') as fi:
         while True:
             data = fi.read(blocksize)
