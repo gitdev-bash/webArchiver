@@ -39,35 +39,36 @@ def hasher(filein, hname, blocksize):
     return(htype.hexdigest())
 
 
-def csver(filein, operation, data):
-    if operation == "find":
-        if not os.path.isfile(filein):
-            return("False")
-        with open(filein, 'rt') as fi:
-            reader = csv.reader(fi, delimiter=',')
-            for row in reader:
-                hashout = row[1]  # location of hash
-                if hashout == data:
-                    return(row[0])
-            return("False")
-    elif operation == "append":
-        if not os.path.isfile(filein):
-            pass
-        with open(filein, 'a') as fd:
-            writer = csv.writer(fd)
-            writer.writerow(data)
+def csv_find(filein, data):
+    if not os.path.isfile(filein):
+        return("False")
+    with open(filein, 'rt') as fi:
+        reader = csv.reader(fi, delimiter=',')
+        for row in reader:
+            hashout = row[1]  # location of hash
+            if hashout == data:
+                return(row[0])
+        return("False")
+
+
+def csv_append(filein, data):
+    if not os.path.isfile(filein):
+        pass
+    with open(filein, 'a') as fd:
+        writer = csv.writer(fd)
+        writer.writerow(data)
 
 
 def wfile(filedef, filerel):
     hashin = hasher(filedef, hashertype, hashblocksize)
-    csvid = csver(csv1, "find", hashin)
+    csvid = csv_find(csv1, hashin)
     if csvid == "False":
         csvid = file_len(csv1)+1
-        csver(csv1, "append", [csvid, hashin])
+        csv_append(csv1, [csvid, hashin])
         shutil.move(filedef, archivedir1 + "/" + str(csvid))
     else:
         os.remove(filedef)
-    csver(csv2, "append", [datetimes, csvid, filerel])
+    csv_append(csv2, [datetimes, csvid, filerel])
     os.symlink(archivedir1 + "/" + str(csvid), filedef)
 
 
@@ -162,3 +163,4 @@ if __name__ == "__main__":
     wfolder(infolder)
     shutil.move(infolder, archivedir2 + "/")
     exit(0)
+    
