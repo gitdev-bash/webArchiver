@@ -45,14 +45,14 @@ def hasher(filein, hname, blocksize):
 def csv_find(filein, data):
     """Finds and returns the row number of the element given, in a CSV file."""
     if not os.path.isfile(filein):
-        return("False")
+        return(-1)
     with open(filein, 'rt') as fi:
         reader = csv.reader(fi, delimiter=',')
         for row in reader:
             hashout = row[1]  # location of hash
             if hashout == data:
                 return(row[0])
-        return("False")
+        return(-1)
 
 
 def csv_append(filein, data):
@@ -69,7 +69,7 @@ def file_worker(filedef, filerel):
     , replaces the file given with a symbolic link."""
     hashin = hasher(filedef, hashertype, hashblocksize)
     csvid = csv_find(csv1, hashin)
-    if csvid == "False":
+    if csvid == -1:
         csvid = file_len(csv1)+1
         csv_append(csv1, [csvid, hashin])
         shutil.move(filedef, archivedir1 + "/" + str(csvid))
@@ -168,7 +168,10 @@ if __name__ == "__main__":
     if not os.path.exists(infolder):
         print("Folder not found!")
         exit(1)
+    if os.path.isdir(archivedir2 + "/" + os.path.basename(infolder)):
+        print("Folder exists in destination!")
+        exit(1)
     folder_worker(infolder)
-    shutil.move(infolder, archivedir2 + "/")
+    shutil.move(infolder, archivedir2 + "/" + os.path.basename(infolder))
     exit(0)
     
