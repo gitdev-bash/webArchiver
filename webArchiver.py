@@ -6,75 +6,6 @@ import datetime
 import argparse
 import shutil
 import configparser
-# set vars
-archivedir1 = os.path.expanduser("~") + "/archiver/files/"
-archivedir2 = os.path.expanduser("~") + "/archiver/archive/"
-csv1 = archivedir1 + "csv1"
-csv2 = archivedir1 + "csv2"
-datetimeformat = "%y.%m.%d-%H:%M"
-datetimes = datetime.datetime.now().strftime(datetimeformat)
-hashblocksize = 65536
-hashertype = "sha256"
-configfile = os.path.expanduser("~") + "/archiver/archiver.conf"
-# readtags
-piparser = argparse.ArgumentParser()
-piparser.add_argument("-fi", "--folderin", help="Input folder")
-piparser.add_argument("-fs", "--foldersave",
-                      help="Archive save directory location")
-piparser.add_argument("-fa", "--folderarchive",
-                      help="Archive archiving directory location")
-piparser.add_argument("-fl1", "--filelist1", help="Archive filelist1 location")
-piparser.add_argument("-fl2", "--filelist2", help="Archive filelist2 location")
-piparser.add_argument("-dtf", "--datetimeformat", help="Set datetime format")
-piparser.add_argument("-hb", "--hashblocksize", help="Set hash blocksize")
-piparser.add_argument("-ht", "--hashtype",
-                      help="""
-        Set hash type to one of:'blake2s', 'sha384',
-        'sha512', 'sha3_256', 'sha256', 'md5', 'sha3_512',
-        'sha3_224', 'shake_128', 'shake_256', 'sha1',
-        'blake2b', 'sha224', 'sha3_384'""")
-piparser.add_argument("-c", "--configfile",
-                      help="Set configfile in init format (in [DEFAULT])")
-piargs = piparser.parse_args()
-if piargs.configfile is not None:
-    configfile = piargs.configfile
-# read config file
-config = configparser.ConfigParser()
-if os.path.isfile(configfile):
-    config.read(configfile)
-    if "DEFAULT" in config:
-        if "folderarchive" in config["DEFAULT"]:
-            archivedir2 = config["DEFAULT"]["folderarchive"]
-        if "filelist1" in config["DEFAULT"]:
-            csv1 = config["DEFAULT"]["filelist1"]
-        if "filelist2" in config["DEFAULT"]:
-            csv2 = config["DEFAULT"]["filelist2"]
-        if "datetimeformat" in config["DEFAULT"]:
-            datetimeformat = config["DEFAULT"]["datetimeformat"]
-        if "hashblocksize" in config["DEFAULT"]:
-            hashblocksize = int(config["DEFAULT"]["hashblocksize"])
-        if "hashtype" in config["DEFAULT"]:
-            hashertype = config["DEFAULT"]["hashtype"]
-        if "foldersave" in config["DEFAULT"]:
-            archivedir1 = config["DEFAULT"]["foldersave"]
-##
-if piargs.folderin is None:
-    print("Give input folder")
-    exit(1)
-if piargs.foldersave is not None:
-    archivedir1 = piargs.foldersave
-if piargs.folderarchive is not None:
-    archivedir2 = piargs.folderarchive
-if piargs.filelist1 is not None:
-    csv1 = piargs.filelist1
-if piargs.filelist2 is not None:
-    csv2 = piargs.filelist2
-if piargs.datetimeformat is not None:
-    datetimeformat = piargs.datetimeformat
-if piargs.hashblocksize is not None:
-    hashblocksize = int(piargs.hashblocksize)
-if piargs.hashtype is not None:
-    hashertype = piargs.hashtype
 
 
 # define functions
@@ -149,13 +80,85 @@ def wfolder(directory):
             wfolder(ffdef)
 
 
-# main program
-forcedir(archivedir1)
-forcedir(archivedir2)
-infolder = os.path.abspath(piargs.folderin)
-if not os.path.exists(infolder):
-    print("Folder not found!")
-    exit(1)
-wfolder(infolder)
-shutil.move(infolder, archivedir2 + "/")
-exit(0)
+if __name__ == "__main__":
+    # set vars
+    archivedir1 = os.path.expanduser("~") + "/archiver/files/"
+    archivedir2 = os.path.expanduser("~") + "/archiver/archive/"
+    csv1 = archivedir1 + "csv1"
+    csv2 = archivedir1 + "csv2"
+    datetimeformat = "%y.%m.%d-%H:%M"
+    datetimes = datetime.datetime.now().strftime(datetimeformat)
+    hashblocksize = 65536
+    hashertype = "sha256"
+    configfile = os.path.expanduser("~") + "/archiver/archiver.conf"
+    # readtags
+    piparser = argparse.ArgumentParser()
+    piparser.add_argument("-fi", "--folderin", help="Input folder")
+    piparser.add_argument("-fs", "--foldersave",
+                          help="Archive save directory location")
+    piparser.add_argument("-fa", "--folderarchive",
+                          help="Archive archiving directory location")
+    piparser.add_argument("-fl1", "--filelist1", help="Archive filelist1 location")
+    piparser.add_argument("-fl2", "--filelist2", help="Archive filelist2 location")
+    piparser.add_argument("-dtf", "--datetimeformat", help="Set datetime format")
+    piparser.add_argument("-hb", "--hashblocksize", help="Set hash blocksize")
+    piparser.add_argument("-ht", "--hashtype",
+                          help="""
+            Set hash type to one of:'blake2s', 'sha384',
+            'sha512', 'sha3_256', 'sha256', 'md5', 'sha3_512',
+            'sha3_224', 'shake_128', 'shake_256', 'sha1',
+            'blake2b', 'sha224', 'sha3_384'""")
+    piparser.add_argument("-c", "--configfile",
+                          help="Set configfile in init format (in [DEFAULT])")
+    piargs = piparser.parse_args()
+    if piargs.configfile is not None:
+        configfile = piargs.configfile
+    # read config file
+    config = configparser.ConfigParser()
+    if os.path.isfile(configfile):
+        config.read(configfile)
+        if "DEFAULT" in config:
+            if "folderarchive" in config["DEFAULT"]:
+                archivedir2 = config["DEFAULT"]["folderarchive"]
+            if "filelist1" in config["DEFAULT"]:
+                csv1 = config["DEFAULT"]["filelist1"]
+            if "filelist2" in config["DEFAULT"]:
+                csv2 = config["DEFAULT"]["filelist2"]
+            if "datetimeformat" in config["DEFAULT"]:
+                datetimeformat = config["DEFAULT"]["datetimeformat"]
+            if "hashblocksize" in config["DEFAULT"]:
+                hashblocksize = int(config["DEFAULT"]["hashblocksize"])
+            if "hashtype" in config["DEFAULT"]:
+                hashertype = config["DEFAULT"]["hashtype"]
+            if "foldersave" in config["DEFAULT"]:
+                archivedir1 = config["DEFAULT"]["foldersave"]
+    ##
+    if piargs.folderin is None:
+        print("Give input folder")
+        exit(1)
+    if piargs.foldersave is not None:
+        archivedir1 = piargs.foldersave
+    if piargs.folderarchive is not None:
+        archivedir2 = piargs.folderarchive
+    if piargs.filelist1 is not None:
+        csv1 = piargs.filelist1
+    if piargs.filelist2 is not None:
+        csv2 = piargs.filelist2
+    if piargs.datetimeformat is not None:
+        datetimeformat = piargs.datetimeformat
+    if piargs.hashblocksize is not None:
+        hashblocksize = int(piargs.hashblocksize)
+    if piargs.hashtype is not None:
+        hashertype = piargs.hashtype
+    
+    
+    # main program
+    forcedir(archivedir1)
+    forcedir(archivedir2)
+    infolder = os.path.abspath(piargs.folderin)
+    if not os.path.exists(infolder):
+        print("Folder not found!")
+        exit(1)
+    wfolder(infolder)
+    shutil.move(infolder, archivedir2 + "/")
+    exit(0)
