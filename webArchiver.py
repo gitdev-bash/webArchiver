@@ -10,6 +10,7 @@ import configparser
 
 # define functions
 def file_len(fname):
+    """Returns the number of lines in a file."""
     if not os.path.isfile(fname):
         return(0)
     with open(fname) as f:
@@ -20,12 +21,14 @@ def file_len(fname):
 
 
 def forcedir(file_path):
+    """Forces a directories existence."""
     directory = os.path.dirname(file_path)
     if not os.path.exists(directory):
         os.makedirs(directory)
 
 
 def hasher(filein, hname, blocksize):
+    """Generates the hash of the file given."""
     htype = getattr(hashlib, hname, print)()
     if htype is None:
         print("wrong hash type")
@@ -40,6 +43,7 @@ def hasher(filein, hname, blocksize):
 
 
 def csv_find(filein, data):
+    """Finds and returns the row number of the element given, in a CSV file."""
     if not os.path.isfile(filein):
         return("False")
     with open(filein, 'rt') as fi:
@@ -52,6 +56,7 @@ def csv_find(filein, data):
 
 
 def csv_append(filein, data):
+    """Appends the given data to a CSV file."""
     if not os.path.isfile(filein):
         pass
     with open(filein, 'a') as fd:
@@ -59,7 +64,9 @@ def csv_append(filein, data):
         writer.writerow(data)
 
 
-def wfile(filedef, filerel):
+def file_worker(filedef, filerel):
+    """Moves the file into another directory and then
+    , replaces the file given with a symbolic link."""
     hashin = hasher(filedef, hashertype, hashblocksize)
     csvid = csv_find(csv1, hashin)
     if csvid == "False":
@@ -72,13 +79,14 @@ def wfile(filedef, filerel):
     os.symlink(archivedir1 + "/" + str(csvid), filedef)
 
 
-def wfolder(directory):
+def folder_worker(directory):
+    """Works down the directory tree of a given folder recursively."""
     for ff in os.listdir(directory):
         ffdef = directory + "/" + ff
         if os.path.isfile(ffdef):
-            wfile(ffdef, ff)
+            file_worker(ffdef, ff)
         else:
-            wfolder(ffdef)
+            folder_worker(ffdef)
 
 
 if __name__ == "__main__":
@@ -160,7 +168,7 @@ if __name__ == "__main__":
     if not os.path.exists(infolder):
         print("Folder not found!")
         exit(1)
-    wfolder(infolder)
+    folder_worker(infolder)
     shutil.move(infolder, archivedir2 + "/")
     exit(0)
     
