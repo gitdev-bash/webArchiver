@@ -107,9 +107,12 @@ if __name__ == "__main__":
                           help="Archive save directory location")
     piparser.add_argument("-fa", "--folderarchive",
                           help="Archive archiving directory location")
-    piparser.add_argument("-fl1", "--filelist1", help="Archive filelist1 location")
-    piparser.add_argument("-fl2", "--filelist2", help="Archive filelist2 location")
-    piparser.add_argument("-dtf", "--datetimeformat", help="Set datetime format")
+    piparser.add_argument("-fl1", "--filelist1",
+                          help="Archive filelist1 location")
+    piparser.add_argument("-fl2", "--filelist2",
+                          help="Archive filelist2 location")
+    piparser.add_argument("-dtf", "--datetimeformat",
+                          help="Set datetime format")
     piparser.add_argument("-hb", "--hashblocksize", help="Set hash blocksize")
     piparser.add_argument("-ht", "--hashtype",
                           help="""
@@ -159,9 +162,7 @@ if __name__ == "__main__":
         hashblocksize = int(piargs.hashblocksize)
     if piargs.hashtype is not None:
         hashertype = piargs.hashtype
-    
-    
-    # main program
+#    main program
     forcedir(archivedir1)
     forcedir(archivedir2)
     infolder = os.path.abspath(piargs.folderin)
@@ -174,4 +175,3 @@ if __name__ == "__main__":
     folder_worker(infolder)
     shutil.move(infolder, archivedir2 + "/" + os.path.basename(infolder))
     exit(0)
-    
