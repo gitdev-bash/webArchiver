@@ -12,12 +12,12 @@ import configparser
 def file_len(fname):
     """Returns the number of lines in a file."""
     if not os.path.isfile(fname):
-        return(0)
+        return 0
     with open(fname) as f:
         count = 0
         for i, l in enumerate(f):
-            count = i+1
-    return(count)
+            count = i + 1
+    return count
 
 
 def forcedir(file_path):
@@ -33,35 +33,34 @@ def hasher(filein, hname, blocksize):
     if htype is None:
         print("wrong hash type")
         exit(1)
-    with open(filein, 'rb') as fi:
+    with open(filein, "rb") as fi:
         while True:
             data = fi.read(blocksize)
             if not data:
                 break
             htype.update(data)
-    return(htype.hexdigest())
+    return htype.hexdigest()
 
 
 def csv_find(filein, data):
     """Finds and returns the row number of the element given, in a CSV file."""
     if not os.path.isfile(filein):
-        return(-1)
-    with open(filein, 'rt') as fi:
-        reader = csv.reader(fi, delimiter=',')
+        return -1
+    with open(filein, "rt") as fi:
+        reader = csv.reader(fi, delimiter=",")
         for row in reader:
             hashout = row[1]  # location of hash
             if hashout == data:
-                return(row[0])
-        return(-1)
+                return row[0]
+        return -1
 
 
 def csv_append(filein, data):
     """Appends the given data to a CSV file."""
     if not os.path.isfile(filein):
         pass
-    with open(filein, 'a') as fd:
-        writer = csv.writer(fd)
-        writer.writerow(data)
+    with open(filein, "a") as fd:
+        csv.writer(fd).writerow(data)
 
 
 def file_worker(filedef, filerel):
@@ -70,7 +69,7 @@ def file_worker(filedef, filerel):
     hashin = hasher(filedef, hashertype, hashblocksize)
     csvid = csv_find(csv1, hashin)
     if csvid == -1:
-        csvid = file_len(csv1)+1
+        csvid = file_len(csv1) + 1
         csv_append(csv1, [csvid, hashin])
         shutil.move(filedef, archivedir1 + "/" + str(csvid))
     else:
@@ -103,25 +102,26 @@ if __name__ == "__main__":
     # readtags
     piparser = argparse.ArgumentParser()
     piparser.add_argument("-fi", "--folderin", help="Input folder")
-    piparser.add_argument("-fs", "--foldersave",
-                          help="Archive save directory location")
-    piparser.add_argument("-fa", "--folderarchive",
-                          help="Archive archiving directory location")
-    piparser.add_argument("-fl1", "--filelist1",
-                          help="Archive filelist1 location")
-    piparser.add_argument("-fl2", "--filelist2",
-                          help="Archive filelist2 location")
-    piparser.add_argument("-dtf", "--datetimeformat",
-                          help="Set datetime format")
+    piparser.add_argument("-fs", "--foldersave", help="Archive save directory location")
+    piparser.add_argument(
+        "-fa", "--folderarchive", help="Archive archiving directory location"
+    )
+    piparser.add_argument("-fl1", "--filelist1", help="Archive filelist1 location")
+    piparser.add_argument("-fl2", "--filelist2", help="Archive filelist2 location")
+    piparser.add_argument("-dtf", "--datetimeformat", help="Set datetime format")
     piparser.add_argument("-hb", "--hashblocksize", help="Set hash blocksize")
-    piparser.add_argument("-ht", "--hashtype",
-                          help="""
+    piparser.add_argument(
+        "-ht",
+        "--hashtype",
+        help="""
             Set hash type to one of:'blake2s', 'sha384',
             'sha512', 'sha3_256', 'sha256', 'md5', 'sha3_512',
             'sha3_224', 'shake_128', 'shake_256', 'sha1',
-            'blake2b', 'sha224', 'sha3_384'""")
-    piparser.add_argument("-c", "--configfile",
-                          help="Set configfile in init format (in [DEFAULT])")
+            'blake2b', 'sha224', 'sha3_384'""",
+    )
+    piparser.add_argument(
+        "-c", "--configfile", help="Set configfile in init format (in [DEFAULT])"
+    )
     piargs = piparser.parse_args()
     if piargs.configfile is not None:
         configfile = piargs.configfile
@@ -162,7 +162,7 @@ if __name__ == "__main__":
         hashblocksize = int(piargs.hashblocksize)
     if piargs.hashtype is not None:
         hashertype = piargs.hashtype
-#    main program
+    #    main program
     forcedir(archivedir1)
     forcedir(archivedir2)
     infolder = os.path.abspath(piargs.folderin)
